@@ -27,30 +27,45 @@
             <!-- d ko lrr mrr -->
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">DataTable with default features</h3>
+                    <h3 class="card-title">Dishes</h3>
+                    <a href="/dish/create" class="btn btn-success" style="float:right">Create</a>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <table id="example2" class="table table-bordered table-hover">
+                @if (session('message'))
+                    <div class="alert alert-success">
+                        {{ session('message') }}
+                    </div>
+                @endif
+                    <table id="example2" class="table table-bordered table-hover table-striped">
                         <thead>
                         <tr>
-                            <th>Rendering engine</th>
-                            <th>Browser</th>
-                            <th>Platform(s)</th>
-                            <th>Engine version</th>
-                            <th>CSS grade</th>
+                            <th>Dish Name</th>
+                            <th>Category</th>
+                            <th>Created</th>
+                            <th>Action</th>
+                            
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>Trident</td>
-                            <td>Internet
-                            Explorer 4.0
-                            </td>
-                            <td>Win 95+</td>
-                            <td> 4</td>
-                            <td>X</td>
-                        </tr>
+                        @foreach($dishes as $dish)
+                          <tr>
+                              <td>{{$dish->name}}</td> 
+                              <td>{{$dish->category->name}}</td>
+                              <td>{{$dish->created_at}}</td> 
+                              <td>
+                                <div class="form-row">
+                                  <a style="height: 38px; margin-right:10px;" href="/dish/{{$dish->id}}/edit" class="btn btn-warning">Edit</a>
+                                  <form action="/dish/{{$dish->id}}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" onclick="return confirm('Are you sure you want to delete this item?');" class="btn btn-danger">Delete</button>
+                                  </form>
+                                </div>
+                                
+                              </td>
+                          </tr>
+                        @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -71,12 +86,13 @@
 
 @endsection
 
+<script src="plugins/jquery/jquery.min.js"></script>
 <script>
  $(function () {
    $('#example2').DataTable({
       "paging": true,
+      "pageLength": 10,
       "lengthChange": false,
-      "searching": false,
       "ordering": true,
       "info": true,
       "autoWidth": false,

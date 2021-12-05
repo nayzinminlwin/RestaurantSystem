@@ -55,13 +55,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
             
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="/dish" class="nav-link active">
+                <a href="/dish" class="nav-link {{ Request::segment(1) == 'dish' ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Dishes</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="/order" class="nav-link">
+              <li class="nav-item"> 
+                <a href="/order" class="nav-link {{ Request::segment(1) == 'order' ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Orders</p>
                 </a>
